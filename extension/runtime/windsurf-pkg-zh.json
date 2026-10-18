@@ -62,6 +62,9 @@
   "Import rules from Cursor": "从 Cursor 导入规则",
   "Let Devin see commands and output from your integrated terminal.": "允许 Devin 查看集成终端中的命令和输出。",
   "Let Devin see which files you edit and create in your workspace.": "允许 Devin 查看您在工作区中编辑和创建的文件。",
+  "Let Devin see which files you edit and which terminal commands you run so it has context when you ask a question.": "允许 Devin 查看你编辑的文件和运行的终端命令，以便在你提问时掌握上下文。",
+  "Run format-on-save and code actions (like organizing imports) after Devin edits a file.": "在 Devin 编辑文件后自动运行保存时格式化和代码操作（例如整理导入）。",
+  "Stop Devin from opening files in the editor while it works on a task.": "禁止 Devin 在处理任务期间自动在编辑器中打开文件。",
   "Lifeguard (Beta): Check Current Changes": "Lifeguard（测试版）：检查当前更改",
   "Lifeguard (Beta): Evaluate Dataset": "Lifeguard（测试版）：评估数据集",
   "Log Out": "退出登录",
@@ -130,5 +133,8 @@
   "When enabled, Cascade will read skills from .claude directories (both local .claude/skills/ and global ~/.claude/skills/).": "启用后，Cascade 将从 .claude 目录（包括本地 .claude/skills/ 和全局 ~/.claude/skills/）读取技能。",
   "When set to a valid ACP agent connector ID (e.g. 'claude-code', 'opencode', 'gemini', 'devin-cli'), newly created Cascade tabs will automatically select that agent if it is available.": "设置为有效的 ACP 代理连接器 ID（例如 'claude-code'、'opencode'、'gemini'、'devin-cli'）时，新创建的 Cascade 标签页将在该代理可用时自动选择它。",
   "When set to a valid ACP agent connector ID (e.g. 'claude-code', 'opencode', 'gemini', 'devin-cli'), newly created Cascade tabs will automatically select that agent if it is available. When left unset, new tabs default to Devin Local if it is available, otherwise Cascade.": "设置为有效的 ACP 代理连接器 ID（例如 'claude-code'、'opencode'、'gemini'、'devin-cli'）时，新创建的 Cascade 标签页将在该代理可用时自动选择它。未设置时，新标签页默认选择 Devin Local（如果可用），否则选择 Cascade。",
-  "Whether to automatically trigger Lifeguard bug checking on commit. When disabled, bug checking must be triggered manually. Default: enabled for Insiders/Next/Dev builds, disabled for Stable.": "是否在提交时自动触发 Lifeguard 缺陷检查。禁用时，必须手动触发缺陷检查。默认值：Insiders/Next/Dev 版本启用，Stable 版本禁用。"
+  "Whether to automatically trigger Lifeguard bug checking on commit. When disabled, bug checking must be triggered manually. Default: enabled for Insiders/Next/Dev builds, disabled for Stable.": "是否在提交时自动触发 Lifeguard 缺陷检查。禁用时，必须手动触发缺陷检查。默认值：Insiders/Next/Dev 版本启用，Stable 版本禁用。",
+  "Stop Devin from opening files in the background when it creates or edits them.": "阻止 Devin 在创建或编辑文件时在后台打开这些文件。",
+  "Let Devin see which files you edit and create in your workspace, and let a Devin Cloud session read unsaved edits when it reads a file on this machine.": "让 Devin 看到你在工作区中编辑和创建的文件，并在云端会话读取本机文件时可读取未保存的编辑内容。",
+  "Run format-on-save and code actions on save (e.g. gofmt) when Devin edits a file. When disabled, agent edits are saved without running save actions.": "当 Devin 编辑文件时，运行保存时格式化 (format-on-save) 及保存时代码操作（如 gofmt）。禁用后，智能体的编辑将直接保存而不运行保存操作。"
 }

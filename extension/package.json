@@ -1,7 +1,7 @@
 {
 	"name": "vscode-language-pack-zh-hans",
-	"displayName": "Chinese (Simplified) (简体中文) Language Pack for Devin",
-	"description": "Devin Desktop 简体中文全量汉化插件（包含 VS Code 核心、Devin 专属工作台、Sessions、Cascade 及 Agent 聊天界面 100% 汉化）",
+	"displayName": "Chinese (Simplified) (简体中文) Language Pack for Devin & Devin Next",
+	"description": "Devin Desktop 与 Devin - Next (Beta) 简体中文全量汉化插件（包含 VS Code 核心、Devin 专属工作台、Agent Window、Sessions、Cascade 及聊天界面 100% 汉化）",
 	"version": "1.126.0",
 	"publisher": "MS-CEINTL",
 	"repository": {

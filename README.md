@@ -1,28 +1,28 @@
-# Devin Desktop 简体中文全量汉化插件 (Devin-LanguagePack-zh-CN)
+# Devin Desktop & Devin - Next 简体中文全量汉化插件 (Devin-LanguagePack-zh-CN)
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](./LICENSE)
-[![Devin Desktop](https://img.shields.io/badge/Devin%20Desktop-%3E%3D1.120.0-6f42c1.svg)](https://github.com/Chun556699/Devin-LanguagePack-zh-CN)
+[![Devin Desktop](https://img.shields.io/badge/Devin%20%2F%20Devin%20Next-%3E%3D1.120.0-6f42c1.svg)](https://github.com/Chun556699/Devin-LanguagePack-zh-CN)
 [![Coverage](https://img.shields.io/badge/NLS%20%26%20Chat%20UI%20Coverage-100%25-brightgreen.svg)](https://github.com/Chun556699/Devin-LanguagePack-zh-CN)
 
-专为 **Devin Desktop**（基于 VS Code `1.126.0` / Windsurf 架构）打造的 **100% 全量简体中文 (`zh-CN`) 语言包与界面汉化插件**。
+专为 **Devin Desktop** 与 **Devin - Next (Beta)**（基于 VS Code `1.126.0` / `1.126.0-next` / Windsurf 架构）打造的 **100% 全量简体中文 (`zh-CN`) 语言包与界面汉化插件**。
 
-彻底解决 Devin Desktop 无法在内置市场搜索中文语言包、官方语言包版本不兼容（`^1.131.0` vs `1.126.0`），以及 **Devin / Cascade / Sessions 聊天面板、Agent 会话、代码审查 (Review) 等专属界面未汉化**的问题。
+彻底解决 Devin Desktop 与 Devin - Next 无法在内置市场搜索中文语言包、官方语言包版本不兼容（`^1.131.0` vs `1.126.0`），以及 **Devin Agent Window、Cascade、Sessions 聊天面板、云端/本地会话、代码审查 (Review) 等专属界面未汉化**的问题。
 
 ---
 
 ## 核心特性
 
-1. **核心工作台与菜单 100% 汉化（21,220 / 21,220 词条）**
-   - 完整覆盖标准 VS Code 词条（20,356 条）以及 Devin / Windsurf / Sessions / Agent Host 新增的 **864 条** 专属核心词条。
+1. **核心工作台与菜单 100% 汉化（正式版 21,220 / 21,220 词条，Next 版 21,219 / 21,219 词条）**
+   - 完整覆盖标准 VS Code 词条以及 Devin / Devin - Next / Windsurf / Sessions / Agent Host / Cloud Session Editor 新增的全部专属核心词条。
    - 完整覆盖全部 **91 个** 内置标准扩展的 `.i18n.json` 中文翻译。
-2. **Devin / Cascade / Sessions 聊天与 AI 界面全量汉化**
-   - 内置 `devin-zh-cn-runtime.js` 运行时翻译引擎，在启动阶段自动拦截并汉化 `@exa/chat-client`（`windsurf-chat-client` 与 `sessions`）的 `i18next` 语言包（`translation` **2,850 词条** + `review` **116 词条** + `englishOverrides`）。
-   - 智能 `MutationObserver` DOM 实时汉化引擎（覆盖 **2,985 条** React 19 JSX 硬编码英文文案及 **44 类** 动态正则句式），完整汉化 Cascade 面板、Agent 会话、技能 (Skills)、工作流 (Workflows)、规则 (Rules)、MCP 服务、浏览器预览、代码审查 (Review) 与合并面板等全部 20 个专属视图。
-   - **安全代码隔离**：自动跳过 Monaco 代码编辑器 (`.monaco-editor`)、终端 (`.xterm`)、`<code>`/`<pre>` 代码块以及用户在 Slate 输入框中输入的文本，仅汉化界面 UI 与输入框占位提示符 (`[data-slate-placeholder="true"]`)。
-3. **内置 `windsurf*` 扩展清单汉化（138 / 138 词条）**
-   - 完整汉化 `windsurf`、`windsurf-dev-containers`、`windsurf-remote-devin`、`windsurf-remote-openssh`、`windsurf-remote-wsl` 5 个内置扩展的命令标题、视图名称与配置项说明。
-4. **自动语言包缓存与校验和同步 (`product.json`)**
-   - 自动配置 `~/.devin/argv.json`（`"locale": "zh-cn"`）、生成 `languagepacks.json` 与 `clp` 预编译语言包缓存，并自动重算更新 `product.json` 的 SHA-256 校验和，完全消除“安装似乎已损坏 (corrupt installation)”警告。
+2. **Devin / Devin - Next / Cascade / Sessions 聊天与 AI 界面全量汉化**
+   - 内置 `devin-zh-cn-runtime.js` 运行时翻译引擎，在启动阶段自动拦截并汉化 `@exa/chat-client`（`windsurf-chat-client`、`sessions`）与 `@devin/webapp-host`（`devin-webapp-host`）的 `i18next` 语言包（`translation` **4,001 词条** + `review` **265 词条** + `englishOverrides`）。
+   - 智能 `MutationObserver` DOM 实时汉化引擎（覆盖 **4,233 条** React 19 JSX 硬编码英文文案及 **44 类** 动态正则句式），完整汉化 Agent Window、Cascade 面板、Agent 会话、收件箱 (Inbox)、看板 (Board)、技能 (Skills)、工作流 (Workflows)、规则 (Rules)、MCP 服务、浏览器预览、代码审查 (Review) 与合并面板等全部专属视图。
+   - **安全代码隔离**：自动跳过 Monaco 代码编辑器 (`.monaco-editor`)、终端 (`.xterm`)、`<code>`/`<pre>` 代码块以及用户在输入框中输入的文本，仅汉化界面 UI 与输入框占位提示符 (`placeholder` / `[data-slate-placeholder="true"]`)。
+3. **内置 `windsurf*` 扩展清单汉化（100% 覆盖）**
+   - 完整汉化 `windsurf`、`windsurf-dev-containers`、`windsurf-remote-devin`、`windsurf-remote-openssh`、`windsurf-remote-wsl` 5 个内置扩展的命令标题、视图名称与配置项说明（同时兼容正式版与 Next 版新增配置）。
+4. **自动识别正式版与 Next 版数据目录 & 校验和同步 (`product.json`)**
+   - 根据目标安装目录的 `product.json` 自动识别 **Devin**（`%APPDATA%\Devin`、`~/.devin`）与 **Devin - Next**（`%APPDATA%\Devin - Next`、`~/.devin-next`），自动配置 `argv.json`（`"locale": "zh-cn"`）、生成 `languagepacks.json` 与 `clp` 预编译语言包缓存，并自动重算更新 `product.json` 的 SHA-256 校验和，完全消除“安装似乎已损坏 (corrupt installation)”警告。
 
 ---
 
@@ -31,27 +31,31 @@
 ### 方式一：通过 `.vsix` 扩展包安装（通用标准方式）
 
 1. 在本仓库（或 Releases）下载 **[`devin-language-pack-zh-hans-1.126.0.vsix`](./devin-language-pack-zh-hans-1.126.0.vsix)**。
-2. 打开 **Devin Desktop**，按 `Ctrl+Shift+X`（macOS 为 `Cmd+Shift+X`）打开扩展视图。
+2. 打开 **Devin Desktop** 或 **Devin - Next**，按 `Ctrl+Shift+X`（macOS 为 `Cmd+Shift+X`）打开扩展视图。
 3. 点击右上角 `...` 菜单 -> 选择 **从 VSIX 安装... (`Install from VSIX...`)**，选择下载的 `.vsix` 文件。
-4. 插件安装激活后会自动配置语言包、生成缓存并应用 UI 补丁，点击右下角弹窗提示的 **立即重新加载 (`Reload Window`)**（或重启 Devin）即可完全生效。
+4. 插件安装激活后会自动配置语言包、生成缓存并应用 UI 补丁，点击右下角弹窗提示的 **立即重新加载 (`Reload Window`)**（或重启客户端）即可完全生效。
 
-### 方式二：克隆仓库一键安装脚本（最快生效）
+### 方式二：克隆仓库一键安装脚本（最快生效，支持同时汉化 Devin 与 Devin Next）
 
 ```bash
 git clone https://github.com/Chun556699/Devin-LanguagePack-zh-CN.git
 cd Devin-LanguagePack-zh-CN
 ```
 
-- **Windows 用户**：直接双击运行 **`install-zh-cn.bat`**（自动识别系统中的 Devin 安装目录，即使未安装 Node.js 也会自动使用 `Devin.exe` 内置运行时执行）。
+- **Windows 用户**：直接双击运行 **`install-zh-cn.bat`**（自动识别系统中的 Devin 与 Devin Next 安装目录，即使未安装 Node.js 也会自动使用 `Devin.exe` 或 `Devin - Next.exe` 内置运行时执行）。
 - **命令行 / 自定义安装路径**：
   ```bash
-  # 自动检测 Devin 路径
+  # 自动检测并汉化系统中安装的 Devin / Devin Next
   node install-zh-cn.js
 
-  # 若你的 Devin 安装在自定义路径，可直接作为参数传入：
-  node install-zh-cn.js "D:\Devin"
+  # 强制扫描并同时汉化本机所有已安装的 Devin 与 Devin Next：
+  node install-zh-cn.js --all
+
+  # 若你的 Devin 或 Devin Next 安装在指定路径，可直接作为参数传入：
+  node install-zh-cn.js "E:\Devin"
+  node install-zh-cn.js "E:\Devin Next"
   ```
-- 启动或重启 **Devin Desktop** 即可直接进入完整简体中文界面。
+- 启动或重启 **Devin Desktop** / **Devin - Next** 即可直接进入完整简体中文界面。
 
 ---
 

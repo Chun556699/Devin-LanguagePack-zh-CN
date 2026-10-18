@@ -11,12 +11,19 @@ if %ERRORLEVEL% EQU 0 (
 
 for %%P in (
   "%SCRIPT_DIR%..\Devin.exe"
+  "%SCRIPT_DIR%..\Devin - Next.exe"
   "%LOCALAPPDATA%\Programs\Devin\Devin.exe"
+  "%LOCALAPPDATA%\Programs\Devin Next\Devin - Next.exe"
   "%PROGRAMFILES%\Devin\Devin.exe"
+  "%PROGRAMFILES%\Devin Next\Devin - Next.exe"
   "C:\Devin\Devin.exe"
+  "C:\Devin Next\Devin - Next.exe"
   "D:\Devin\Devin.exe"
+  "D:\Devin Next\Devin - Next.exe"
   "E:\Devin\Devin.exe"
+  "E:\Devin Next\Devin - Next.exe"
   "F:\Devin\Devin.exe"
+  "F:\Devin Next\Devin - Next.exe"
 ) do (
   if exist "%%~P" (
     set "ELECTRON_RUN_AS_NODE=1"

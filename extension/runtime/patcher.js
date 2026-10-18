@@ -31,30 +31,44 @@ function normalizeAppCandidate(dir) {
   return null;
 }
 
-function detectDevinAppRoot(explicitAppRoot) {
-  const fromExplicit = normalizeAppCandidate(explicitAppRoot || process.env.DEVIN_APP_ROOT || process.env.DEVIN_PATH);
-  if (fromExplicit) return fromExplicit;
-
+function getCandidateDirs() {
+  const folderNames = ['Devin', 'Devin Next', 'Devin - Next'];
   const candidates = [
     path.resolve(__dirname, '..', '..', '..'),
-    path.resolve(__dirname, '..', '..', '..', '..'),
-    path.join(process.env.LOCALAPPDATA || '', 'Programs', 'Devin'),
-    path.join(process.env.LOCALAPPDATA || '', 'Devin'),
-    path.join(process.env.PROGRAMFILES || '', 'Devin'),
-    path.join(process.env['PROGRAMFILES(X86)'] || '', 'Devin'),
-    '/Applications/Devin.app',
-    path.join(os.homedir(), 'Applications', 'Devin.app'),
-    '/usr/share/devin',
-    '/opt/devin',
-    '/opt/Devin'
+    path.resolve(__dirname, '..', '..', '..', '..')
   ];
+
+  for (const name of folderNames) {
+    candidates.push(
+      path.join(process.env.LOCALAPPDATA || '', 'Programs', name),
+      path.join(process.env.LOCALAPPDATA || '', name),
+      path.join(process.env.PROGRAMFILES || '', name),
+      path.join(process.env['PROGRAMFILES(X86)'] || '', name),
+      '/Applications/' + name + '.app',
+      path.join(os.homedir(), 'Applications', name + '.app')
+    );
+  }
+
+  candidates.push(
+    '/usr/share/devin',
+    '/usr/share/devin-next',
+    '/usr/share/devin-desktop',
+    '/usr/share/devin-desktop-next',
+    '/opt/devin',
+    '/opt/Devin',
+    '/opt/devin-next',
+    '/opt/Devin Next',
+    '/opt/Devin - Next'
+  );
 
   if (process.platform === 'win32') {
     for (let code = 67; code <= 90; code++) {
       const drive = String.fromCharCode(code) + ':\\';
-      candidates.push(path.join(drive, 'Devin'));
-      candidates.push(path.join(drive, 'Program Files', 'Devin'));
-      candidates.push(path.join(drive, 'Programs', 'Devin'));
+      for (const name of folderNames) {
+        candidates.push(path.join(drive, name));
+        candidates.push(path.join(drive, 'Program Files', name));
+        candidates.push(path.join(drive, 'Programs', name));
+      }
     }
     const pathDirs = (process.env.PATH || '').split(path.delimiter);
     for (const p of pathDirs) {
@@ -63,44 +77,105 @@ function detectDevinAppRoot(explicitAppRoot) {
       }
     }
   }
+  return candidates;
+}
 
-  for (const c of candidates) {
+function detectDevinAppRoot(explicitAppRoot) {
+  const fromExplicit = normalizeAppCandidate(explicitAppRoot || process.env.DEVIN_APP_ROOT || process.env.DEVIN_PATH);
+  if (fromExplicit) return fromExplicit;
+
+  for (const c of getCandidateDirs()) {
     const resolved = normalizeAppCandidate(c);
     if (resolved) return resolved;
   }
   throw new Error(
-    '未自动找到 Devin 安装目录 (resources/app)。请在命令行传入 Devin 路径，例如: node install-zh-cn.js "D:\\Devin"'
+    '未自动找到 Devin / Devin Next 安装目录 (resources/app)。请在命令行传入安装路径，例如: node install-zh-cn.js "D:\\Devin" 或 "D:\\Devin Next"'
   );
 }
 
-function getDefaultAppDataDir(userHome) {
+function detectAllDevinAppRoots(explicitAppRoot) {
+  if (explicitAppRoot && explicitAppRoot !== '--all') {
+    const single = normalizeAppCandidate(explicitAppRoot);
+    if (single) return [single];
+    throw new Error('指定的路径不是有效的 Devin / Devin Next 安装目录: ' + explicitAppRoot);
+  }
+
+  if (explicitAppRoot !== '--all') {
+    const envRoot = normalizeAppCandidate(process.env.DEVIN_APP_ROOT || process.env.DEVIN_PATH);
+    if (envRoot) return [envRoot];
+
+    // If the plugin directory itself is placed inside a specific Devin / Devin Next installation, target that installation
+    const parentCandidate =
+      normalizeAppCandidate(path.resolve(__dirname, '..', '..', '..')) ||
+      normalizeAppCandidate(path.resolve(__dirname, '..', '..', '..', '..'));
+    if (parentCandidate) {
+      return [parentCandidate];
+    }
+  }
+
+  const found = [];
+  const seen = new Set();
+  for (const c of getCandidateDirs()) {
+    const resolved = normalizeAppCandidate(c);
+    if (resolved) {
+      const key = process.platform === 'win32' ? resolved.toLowerCase() : resolved;
+      if (!seen.has(key)) {
+        seen.add(key);
+        found.push(resolved);
+      }
+    }
+  }
+  if (found.length === 0) {
+    throw new Error(
+      '未自动找到 Devin / Devin Next 安装目录 (resources/app)。请在命令行传入安装路径，例如: node install-zh-cn.js "D:\\Devin" 或 "D:\\Devin Next"'
+    );
+  }
+  return found;
+}
+
+function getDefaultAppDataDir(userHome, appNameLong = 'Devin') {
   if (process.platform === 'win32') {
-    return path.join(process.env.APPDATA || path.join(userHome, 'AppData', 'Roaming'), 'Devin');
+    return path.join(process.env.APPDATA || path.join(userHome, 'AppData', 'Roaming'), appNameLong);
   }
   if (process.platform === 'darwin') {
-    return path.join(userHome, 'Library', 'Application Support', 'Devin');
+    return path.join(userHome, 'Library', 'Application Support', appNameLong);
   }
-  return path.join(process.env.XDG_CONFIG_HOME || path.join(userHome, '.config'), 'Devin');
+  return path.join(process.env.XDG_CONFIG_HOME || path.join(userHome, '.config'), appNameLong);
 }
 
 function getPaths(options = {}) {
   const appRoot = detectDevinAppRoot(options.appRoot);
+  const productJsonPath = path.join(appRoot, 'product.json');
+  let product = {};
+  if (fs.existsSync(productJsonPath)) {
+    try {
+      product = JSON.parse(fs.readFileSync(productJsonPath, 'utf8'));
+    } catch (e) {}
+  }
+  const appNameLong = product.nameLong || product.nameShort || 'Devin';
+  const dataFolderName = product.dataFolderName || '.devin';
+  const appVersion = product.version || EXT_VERSION;
+
   const userHome = options.userHome || os.homedir();
-  const appDataDir = options.appDataDir || getDefaultAppDataDir(userHome);
-  const dotDevinDir = options.dotDevinDir || path.join(userHome, '.devin');
+  const appDataDir = options.appDataDir || getDefaultAppDataDir(userHome, appNameLong);
+  const dotDevinDir = options.dotDevinDir || path.join(userHome, dataFolderName);
   const extensionsDir = path.join(dotDevinDir, 'extensions');
   const installedExtDir = path.join(extensionsDir, EXT_ID + '-' + EXT_VERSION);
   return {
     appRoot,
+    appNameLong,
+    dataFolderName,
+    appVersion,
     userHome,
     appDataDir,
     dotDevinDir,
     extensionsDir,
     installedExtDir,
-    productJsonPath: path.join(appRoot, 'product.json'),
+    productJsonPath,
     workbenchJsPath: path.join(appRoot, 'out', 'vs', 'code', 'electron-browser', 'workbench', 'workbench.js'),
     sessionsJsPath: path.join(appRoot, 'out', 'vs', 'sessions', 'electron-browser', 'sessions.js'),
     chatClientDir: path.join(appRoot, 'out', 'vs', 'workbench', 'windsurf-chat-client'),
+    webappHostDir: path.join(appRoot, 'out', 'vs', 'workbench', 'devin-webapp-host'),
     builtinExtsDir: path.join(appRoot, 'extensions')
   };
 }
@@ -299,9 +374,11 @@ function patchFilesAndChecksums(paths, sourceExtDir) {
   const runtimeContent = fs.readFileSync(runtimeFile, 'utf8');
   const pkgDict = JSON.parse(fs.readFileSync(pkgDictFile, 'utf8'));
 
-  // 1. Copy runtime to windsurf-chat-client directory for reference
-  if (fs.existsSync(paths.chatClientDir)) {
-    fs.writeFileSync(path.join(paths.chatClientDir, 'devin-zh-cn-runtime.js'), runtimeContent, 'utf8');
+  // 1. Copy runtime to windsurf-chat-client and devin-webapp-host directories for reference
+  for (const dir of [paths.chatClientDir, paths.webappHostDir]) {
+    if (dir && fs.existsSync(dir)) {
+      fs.writeFileSync(path.join(dir, 'devin-zh-cn-runtime.js'), runtimeContent, 'utf8');
+    }
   }
 
   // 2. Inject runtime into workbench.js and sessions.js
@@ -395,9 +472,12 @@ function removeZhCnPatch(options = {}) {
     }
   }
 
-  const runtimeRef = path.join(paths.chatClientDir, 'devin-zh-cn-runtime.js');
-  if (fs.existsSync(runtimeRef)) {
-    try { fs.unlinkSync(runtimeRef); } catch (e) {}
+  for (const dir of [paths.chatClientDir, paths.webappHostDir]) {
+    if (!dir) continue;
+    const runtimeRef = path.join(dir, 'devin-zh-cn-runtime.js');
+    if (fs.existsSync(runtimeRef)) {
+      try { fs.unlinkSync(runtimeRef); } catch (e) {}
+    }
   }
 
   if (fs.existsSync(paths.builtinExtsDir)) {
@@ -435,6 +515,8 @@ function removeZhCnPatch(options = {}) {
 }
 
 module.exports = {
+  detectDevinAppRoot,
+  detectAllDevinAppRoots,
   getPaths,
   isPatchComplete,
   applyZhCnPatch,
